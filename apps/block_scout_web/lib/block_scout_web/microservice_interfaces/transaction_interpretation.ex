@@ -184,7 +184,6 @@ defmodule BlockScoutWeb.MicroserviceInterfaces.TransactionInterpretation do
     |> Chain.transaction_to_token_transfers(full_options)
     |> Chain.flat_1155_batch_token_transfers()
     |> Enum.take(@items_limit)
-    |> Enum.map(&TokenTransferView.prepare_token_transfer(&1, nil, decoded_input))
   end
 
   defp prepare_token_transfers(token_transfers, decoded_input) do
