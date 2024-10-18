@@ -265,4 +265,26 @@ defmodule Explorer.Helper do
       query
     end
   end
+
+  @spec check_time_interval(DateTime.t() | nil, integer()) :: true | integer()
+  def check_time_interval(nil, _interval), do: true
+
+  def check_time_interval(sent_at, interval) do
+    now = DateTime.utc_now()
+
+    if sent_at
+       |> DateTime.add(interval, :millisecond)
+       |> DateTime.compare(now) != :gt do
+      true
+    else
+      sent_at
+      |> DateTime.add(interval, :millisecond)
+      |> DateTime.diff(now, :second)
+    end
+  end
+
+  @spec get_app_host :: String.t()
+  def get_app_host do
+    Application.get_env(:block_scout_web, BlockScoutWeb.Endpoint)[:url][:host]
+  end
 end
